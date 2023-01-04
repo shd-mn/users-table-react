@@ -3,6 +3,7 @@ import { useUsers } from '../../context/MainContext';
 import { v4 as uuidv4 } from 'uuid';
 import { Table, Alert, Button } from 'react-bootstrap';
 import User from './User';
+import TooltipComp from '../UI/TooltipComp';
 
 const UserList = () => {
     const { showAlert, currentUsers, sort, handleSort } = useUsers();
@@ -17,14 +18,16 @@ const UserList = () => {
                     <tr>
                         <th>
                             Name
-                            <Button
-                                variant="outline-dark"
-                                size="sm"
-                                className="ms-5"
-                                onClick={handleSort}
-                            >
-                                {sort ? '🔽' : '🔼'}
-                            </Button>
+                            <TooltipComp text="sort list" placement="bottom">
+                                <Button
+                                    variant="outline-dark"
+                                    size="sm"
+                                    className="ms-5"
+                                    onClick={handleSort}
+                                >
+                                    {sort ? '🔽' : '🔼'}
+                                </Button>
+                            </TooltipComp>
                         </th>
                         <th>Email</th>
                         <th>Website</th>

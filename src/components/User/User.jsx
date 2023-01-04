@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useUsers } from '../../context/MainContext';
 import { Button } from 'react-bootstrap';
 import EditModal from '../UI/EditModal';
+import TooltipComp from '../UI/TooltipComp';
 
 const User = ({ user, id }) => {
     const { deleteUsers } = useUsers();
@@ -22,23 +23,28 @@ const User = ({ user, id }) => {
             <td>{user.website}</td>
             <td>{user.phone}</td>
             <td>
-                <Button
-                    onClick={showModal}
-                    id={user.id}
-                    size="sm"
-                    variant="secondary"
-                >
-                    Edit
-                </Button>
-                <Button
-                    onClick={() => {
-                        deleteUsers(user.id);
-                    }}
-                    size="sm"
-                    variant="danger"
-                >
-                    Del
-                </Button>
+                <TooltipComp text="update user" placement="top">
+                    <Button
+                        onClick={showModal}
+                        id={user.id}
+                        size="sm"
+                        variant="secondary"
+                    >
+                        Edit
+                    </Button>
+                </TooltipComp>
+
+                <TooltipComp text="delete user" placement="top">
+                    <Button
+                        onClick={() => {
+                            deleteUsers(user.id);
+                        }}
+                        size="sm"
+                        variant="danger"
+                    >
+                        Del
+                    </Button>
+                </TooltipComp>
                 <EditModal user={user} show={show} closeModal={closeModal} />
             </td>
         </>

@@ -23,10 +23,11 @@ const MainProvider = ({ children }) => {
         setUsers(users.filter((user) => user.id !== id));
     };
 
-    const addUser = (e) => {
+    const addUser = (e, closeModal) => {
         e.preventDefault();
         newUser.name && newUser.email && setUsers([...users, newUser]);
         newUser.name && newUser.email && handleShowAlert();
+        closeModal();
     };
 
     const editUser = (id, updatedUser) => {

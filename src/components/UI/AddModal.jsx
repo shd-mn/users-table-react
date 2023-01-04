@@ -78,7 +78,7 @@ const AddModal = ({ show, closeModal }) => {
                         <Form.Group className="mb-3 d-grid gap-2">
                             <Button
                                 onClick={(e) => {
-                                    addUser(e);
+                                    addUser(e, closeModal);
                                 }}
                                 type="submit"
                                 variant="success"

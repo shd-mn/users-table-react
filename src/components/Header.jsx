@@ -1,14 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useUsers } from '../context/MainContext';
 
 import { Button } from 'react-bootstrap';
 import AddModal from './UI/AddModal';
 
 const Header = () => {
-    const { users, setNewUser } = useUsers();
-    useEffect(() => {
-        closeModal();
-    }, [users]);
+    const { setNewUser } = useUsers();
+
     const [show, setShow] = useState(false);
 
     const showModal = () => {

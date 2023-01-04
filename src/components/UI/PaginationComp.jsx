@@ -7,7 +7,7 @@ function PaginationComp() {
         totalPages,
         currentPage,
         setCurrentPage,
-        indexOfLastUser
+        currentUsers
     } = useUsers();
     const pages = [];
     for (let i = 1; i <= totalPages; i++) {
@@ -27,7 +27,7 @@ function PaginationComp() {
     return (
         <div className="d-flex px-2 align-items-center">
             <p className="pagination-info me-auto">
-                Showing {indexOfLastUser} out of {users.length}
+                Showing {currentUsers.length} out of {users.length}
             </p>
             <Pagination>
                 <Pagination.Prev
