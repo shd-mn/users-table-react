@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useUsers } from '../../context/MainContext';
-// import { v4 as uuidv4 } from 'uuid';
 const EditModal = ({ user, show, closeModal }) => {
-    const { editUser } = useUsers();
+    const { dispatch } = useUsers();
     const id = user.id;
 
     const [updated, setUpdated] = useState({
@@ -11,11 +10,16 @@ const EditModal = ({ user, show, closeModal }) => {
         name: user.name,
         email: user.email,
         website: user.website,
-        phone: user.phone
+        phone: user.phone,
     });
 
     const handleChange = (e) => {
         setUpdated({ ...updated, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch({ type: 'update_user', id, updated });
     };
 
     return (
@@ -85,9 +89,7 @@ const EditModal = ({ user, show, closeModal }) => {
 
                         <Form.Group className="mb-3 d-grid gap-2">
                             <Button
-                                onClick={() => {
-                                    editUser(id, updated);
-                                }}
+                                onClick={(e) => handleSubmit(e)}
                                 type="submit"
                                 variant="success"
                             >

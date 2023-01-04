@@ -6,7 +6,11 @@ import User from './User';
 import TooltipComp from '../UI/TooltipComp';
 
 const UserList = () => {
-    const { showAlert, currentUsers, sort, handleSort } = useUsers();
+    const { showAlert, currentUsers, sort, setSort, dispatch } = useUsers();
+    const handleSort = () => {
+        dispatch({ type: 'sort_user', sort });
+        setSort(!sort);
+    };
 
     return (
         <div>
@@ -18,7 +22,7 @@ const UserList = () => {
                     <tr>
                         <th>
                             Name
-                            <TooltipComp text="sort list" placement="bottom">
+                            <TooltipComp text="sort list" placement="right">
                                 <Button
                                     variant="outline-dark"
                                     size="sm"

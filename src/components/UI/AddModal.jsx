@@ -2,14 +2,23 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { useUsers } from '../../context/MainContext';
 import { v4 as uuidv4 } from 'uuid';
 const AddModal = ({ show, closeModal }) => {
-    const { newUser, setNewUser, addUser } = useUsers();
+    const { newUser, setNewUser, dispatch, handleShowAlert } = useUsers();
 
     const handleChange = (e) => {
         setNewUser({
             ...newUser,
             id: uuidv4(),
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
         });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (newUser.name && newUser.email) {
+            dispatch({ type: 'add_user', newUser });
+            handleShowAlert();
+            closeModal();
+        }
     };
 
     return (
@@ -33,7 +42,6 @@ const AddModal = ({ show, closeModal }) => {
                                 onChange={(e) => handleChange(e)}
                                 type="text"
                                 placeholder="Name *"
-                                required
                             />
                         </Form.Group>
 
@@ -46,7 +54,6 @@ const AddModal = ({ show, closeModal }) => {
                                 onChange={(e) => handleChange(e)}
                                 type="email"
                                 placeholder="Email *"
-                                required
                             />
                         </Form.Group>
 
@@ -78,7 +85,7 @@ const AddModal = ({ show, closeModal }) => {
                         <Form.Group className="mb-3 d-grid gap-2">
                             <Button
                                 onClick={(e) => {
-                                    addUser(e, closeModal);
+                                    handleSubmit(e);
                                 }}
                                 type="submit"
                                 variant="success"

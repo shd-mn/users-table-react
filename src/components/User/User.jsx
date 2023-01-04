@@ -5,7 +5,7 @@ import EditModal from '../UI/EditModal';
 import TooltipComp from '../UI/TooltipComp';
 
 const User = ({ user, id }) => {
-    const { deleteUsers } = useUsers();
+    const { dispatch } = useUsers();
 
     const [show, setShow] = useState(false);
 
@@ -36,9 +36,9 @@ const User = ({ user, id }) => {
 
                 <TooltipComp text="delete user" placement="top">
                     <Button
-                        onClick={() => {
-                            deleteUsers(user.id);
-                        }}
+                        onClick={() =>
+                            dispatch({ type: 'delete_user', id: user.id })
+                        }
                         size="sm"
                         variant="danger"
                     >

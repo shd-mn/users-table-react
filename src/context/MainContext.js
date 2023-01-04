@@ -1,13 +1,11 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useReducer, useState } from 'react';
 import { db } from '../db';
 
 const MainContext = createContext();
 const MainProvider = ({ children }) => {
-    const [users, setUsers] = useState([]);
-    const [showAlert, setShowAlert] = useState(false);
-    // const [sortedUser, setSortedUser] = useState(users);
-    const [sort, setSort] = useState(false);
 
+    const [showAlert, setShowAlert] = useState(false);
+    const [sort, setSort] = useState(false);
     const [newUser, setNewUser] = useState({
         name: '',
         email: '',
@@ -15,24 +13,40 @@ const MainProvider = ({ children }) => {
         phone: ''
     });
 
-    useEffect(() => {
-        setUsers(db);
-    }, []);
+    const reducer = (users, action) => {
+        switch (action.type) {
+            case 'add_user':
+                return [
+                    ...users,
+                    {
+                        name: action.newUser.name,
+                        email: action.newUser.email,
+                        website: action.newUser.website,
+                        phone: action.newUser.phone
+                    }
+                ];
 
-    const deleteUsers = (id) => {
-        setUsers(users.filter((user) => user.id !== id));
+            case 'delete_user':
+                return users.filter((user) => user.id !== action.id);
+            case 'update_user':
+                return users.map((user) =>
+                    user.id === action.id ? action.updated : user
+                );
+            case 'sort_user':
+                return users.sort((a, b) =>
+                    action.sort
+                        ? a.name.localeCompare(b.name)
+                        : b.name.localeCompare(a.name)
+                );
+            default:
+                return users;
+        }
     };
 
-    const addUser = (e, closeModal) => {
-        e.preventDefault();
-        newUser.name && newUser.email && setUsers([...users, newUser]);
-        newUser.name && newUser.email && handleShowAlert();
-        closeModal();
-    };
+    const [users, dispatch] = useReducer(reducer, db);
 
-    const editUser = (id, updatedUser) => {
-        setUsers(users.map((user) => (user.id === id ? updatedUser : user)));
-    };
+
+
 
     const handleShowAlert = () => {
         setShowAlert(true);
@@ -41,18 +55,6 @@ const MainProvider = ({ children }) => {
         }, 2000);
     };
 
-    const handleSort = () => {
-        setUsers(
-            users.sort((a, b) =>
-                sort
-                    ? a.name.localeCompare(b.name)
-                    : b.name.localeCompare(a.name)
-            )
-        );
-        setSort(!sort);
-    };
-
-    // Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(4);
 
@@ -63,12 +65,9 @@ const MainProvider = ({ children }) => {
 
     const data = {
         users,
-        setUsers,
+        dispatch,
         newUser,
         setNewUser,
-        addUser,
-        editUser,
-        deleteUsers,
         showAlert,
         handleShowAlert,
         currentUsers,
@@ -77,7 +76,7 @@ const MainProvider = ({ children }) => {
         setCurrentPage,
         indexOfLastUser,
         sort,
-        handleSort
+        setSort
     };
     return <MainContext.Provider value={data}>{children}</MainContext.Provider>;
 };
