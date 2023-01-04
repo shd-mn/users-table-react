@@ -1,0 +1,17 @@
+.App {
+    font-family: sans-serif;
+    text-align: center;
+}
+
+.alert {
+    position: absolute;
+    top: 90px;
+    left: 30px;
+    margin: 0 auto;
+    width: 80%;
+    font-weight: 600;
+}
+
+.pagination-info {
+    display: inline;
+}
